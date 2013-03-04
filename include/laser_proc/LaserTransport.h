@@ -42,12 +42,13 @@ namespace laser_proc
 { 
   class LaserTransport
   {
-    static LaserPublisher advertiseLaser(ros::NodeHandle& nh, uint32_t queue_size, bool latch=false);
+      public:
+        static LaserPublisher advertiseLaser(ros::NodeHandle& nh, uint32_t queue_size, bool latch=false);
 
-    static LaserPublisher advertiseLaser(ros::NodeHandle& nh, uint32_t queue_size,
-                    const ros::SubscriberStatusCallback& connect_cb=ros::SubscriberStatusCallback(),
-                    const ros::SubscriberStatusCallback& disconnect_cb=ros::SubscriberStatusCallback(),
-                    const ros::VoidPtr& tracked_object=ros::VoidConstPtr(), bool latch=false);
+        static LaserPublisher advertiseLaser(ros::NodeHandle& nh, uint32_t queue_size,
+                        const ros::SubscriberStatusCallback& connect_cb,
+                        const ros::SubscriberStatusCallback& disconnect_cb=ros::SubscriberStatusCallback(),
+                        const ros::VoidPtr& tracked_object=ros::VoidPtr(), bool latch=false);
 
   };
   

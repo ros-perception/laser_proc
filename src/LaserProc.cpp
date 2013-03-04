@@ -33,6 +33,8 @@
 
 #include <laser_proc/LaserProc.h>
 
+#include <ros/console.h>
+
 using namespace laser_proc;
 
 sensor_msgs::LaserScanPtr LaserProc::getFirstScan(const sensor_msgs::MultiEchoLaserScan& msg){
@@ -42,10 +44,15 @@ sensor_msgs::LaserScanPtr LaserProc::getFirstScan(const sensor_msgs::MultiEchoLa
   if(msg.ranges.size() == msg.intensities.size()){
     out->intensities.resize(msg.intensities.size());
   }
+
   for(size_t i = 0; i < out->ranges.size(); i++){
     size_t index = getFirstValue(msg.ranges[i], out->ranges[i]);
     if(out->intensities.size() > 0){
-      out->intensities[i] = msg.intensities[i].echoes[index];
+      if(msg.intensities[i].echoes.size() > 0){
+        out->intensities[i] = msg.intensities[i].echoes[index];
+      } else {
+        out->intensities[i] = 0.0;
+      }
     }
   }
   return out;
@@ -61,7 +68,11 @@ sensor_msgs::LaserScanPtr LaserProc::getLastScan(const sensor_msgs::MultiEchoLas
   for(size_t i = 0; i < out->ranges.size(); i++){
     size_t index = getLastValue(msg.ranges[i], out->ranges[i]);
     if(out->intensities.size() > 0){
-      out->intensities[i] = msg.intensities[i].echoes[index];
+      if(msg.intensities[i].echoes.size() > 0){
+        out->intensities[i] = msg.intensities[i].echoes[index];
+      } else {
+        out->intensities[i] = 0.0;
+      }
     }
   }
   return out;
@@ -119,7 +130,7 @@ size_t LaserProc::getLastValue(const sensor_msgs::LaserEcho& ranges, float& rang
   return 0; // Value doesn't matter
 }
 
-void getMostIntenseValue(const sensor_msgs::LaserEcho& ranges, const sensor_msgs::LaserEcho& intensities, float& range, float& intensity){
+void LaserProc::getMostIntenseValue(const sensor_msgs::LaserEcho& ranges, const sensor_msgs::LaserEcho& intensities, float& range, float& intensity){
   if(intensities.echoes.size() == 0){
     range = std::numeric_limits<float>::quiet_NaN();
     intensity = 0.0;
