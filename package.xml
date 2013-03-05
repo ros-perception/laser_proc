@@ -27,5 +27,6 @@
   <run_depend>nodelet</run_depend>
   
   <export>
+    <nodelet plugin="${prefix}/nodelets.xml"/>
   </export>
 </package>

@@ -31,27 +31,52 @@
  * Author: Chad Rockey
  */
 
-#ifndef IMAGE_PROC_LASER_TRANSPORT_H
-#define IMAGE_PROC_LASER_TRANSPORT_H
+#ifndef LASER_PROC_ROS_H
+#define LASER_PROC_ROS_H
 
 #include <ros/ros.h>
-
-#include <laser_proc/LaserPublisher.h>
+#include <laser_proc/LaserTransport.h>
+#include <sensor_msgs/LaserScan.h>
+#include <sensor_msgs/MultiEchoLaserScan.h>
+#include <boost/thread/mutex.hpp>
 
 namespace laser_proc
 { 
-  class LaserTransport
+  class LaserProcROS
   {
-      public:
-        static LaserPublisher advertiseLaser(ros::NodeHandle& nh, uint32_t queue_size, bool latch=false);
+  public:
+    LaserProcROS(ros::NodeHandle& n, ros::NodeHandle& pnh);
+    
+    ~LaserProcROS();
 
-        static LaserPublisher advertiseLaser(ros::NodeHandle& nh, uint32_t queue_size,
-                        const ros::SubscriberStatusCallback& connect_cb,
-                        const ros::SubscriberStatusCallback& disconnect_cb=ros::SubscriberStatusCallback(),
-                        const ros::VoidPtr& tracked_object=ros::VoidPtr(), bool latch=false, bool publish_echoes=true);
+  private:
 
+    void scanCb(const sensor_msgs::MultiEchoLaserScanConstPtr& msg);
+
+    /**
+     * Callback that is called when there is a new subscriber.
+     * 
+     * Will not subscribe until we have a subscriber for our LaserScans (lazy subscribing).
+     * 
+     */
+    void connectCb(const ros::SingleSubscriberPublisher& pub);
+
+    /**
+     * Callback called when a subscriber unsubscribes.
+     * 
+     * If all current subscribers of our LaserScans stop listening, stop subscribing (lazy subscribing).
+     * 
+     */
+    void disconnectCb(const ros::SingleSubscriberPublisher& pub);
+    
+    ros::NodeHandle nh_; ///< Nodehandle used to subscribe in the connectCb.
+    laser_proc::LaserPublisher pub_; ///< Publisher
+    ros::Subscriber sub_; ///< Multi echo subscriber
+    
+    boost::mutex connect_mutex_; ///< Prevents the connectCb and disconnectCb from being called until everything is initialized.
   };
   
-}; // laser_proc
+  
+}; // depthimage_to_laserscan
 
 #endif

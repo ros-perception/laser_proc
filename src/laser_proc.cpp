@@ -31,27 +31,16 @@
  * Author: Chad Rockey
  */
 
-#ifndef IMAGE_PROC_LASER_TRANSPORT_H
-#define IMAGE_PROC_LASER_TRANSPORT_H
+#include <laser_proc/LaserProcROS.h>
 
-#include <ros/ros.h>
-
-#include <laser_proc/LaserPublisher.h>
-
-namespace laser_proc
-{ 
-  class LaserTransport
-  {
-      public:
-        static LaserPublisher advertiseLaser(ros::NodeHandle& nh, uint32_t queue_size, bool latch=false);
-
-        static LaserPublisher advertiseLaser(ros::NodeHandle& nh, uint32_t queue_size,
-                        const ros::SubscriberStatusCallback& connect_cb,
-                        const ros::SubscriberStatusCallback& disconnect_cb=ros::SubscriberStatusCallback(),
-                        const ros::VoidPtr& tracked_object=ros::VoidPtr(), bool latch=false, bool publish_echoes=true);
-
-  };
+int main(int argc, char **argv){
+  ros::init(argc, argv, "laser_proc");
+  ros::NodeHandle n;
+  ros::NodeHandle pnh("~");
   
-}; // laser_proc
+  laser_proc::LaserProcROS lp(n, pnh);
+  
+  ros::spin();
 
-#endif
+  return 0;
+}

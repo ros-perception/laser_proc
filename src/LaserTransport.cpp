@@ -42,8 +42,8 @@ LaserPublisher LaserTransport::advertiseLaser(ros::NodeHandle& nh, uint32_t queu
 LaserPublisher LaserTransport::advertiseLaser(ros::NodeHandle& nh, uint32_t queue_size,
                                               const ros::SubscriberStatusCallback& connect_cb,
                                               const ros::SubscriberStatusCallback& disconnect_cb,
-                                              const ros::VoidPtr& tracked_object, bool latch){
-  return LaserPublisher(nh, queue_size, connect_cb, disconnect_cb, tracked_object, latch);
+                                              const ros::VoidPtr& tracked_object, bool latch, bool publish_echoes){
+  return LaserPublisher(nh, queue_size, connect_cb, disconnect_cb, tracked_object, latch, publish_echoes);
 }
 
 } //namespace laser_proc

@@ -31,27 +31,31 @@
  * Author: Chad Rockey
  */
 
-#ifndef IMAGE_PROC_LASER_TRANSPORT_H
-#define IMAGE_PROC_LASER_TRANSPORT_H
+#include <laser_proc/LaserProcROS.h>
+#include <nodelet/nodelet.h>
 
-#include <ros/ros.h>
-
-#include <laser_proc/LaserPublisher.h>
 
 namespace laser_proc
-{ 
-  class LaserTransport
+{
+
+class LaserProcNodelet : public nodelet::Nodelet
+{
+public:
+  LaserProcNodelet()  {};
+
+  ~LaserProcNodelet() {}
+
+private:
+  virtual void onInit()
   {
-      public:
-        static LaserPublisher advertiseLaser(ros::NodeHandle& nh, uint32_t queue_size, bool latch=false);
-
-        static LaserPublisher advertiseLaser(ros::NodeHandle& nh, uint32_t queue_size,
-                        const ros::SubscriberStatusCallback& connect_cb,
-                        const ros::SubscriberStatusCallback& disconnect_cb=ros::SubscriberStatusCallback(),
-                        const ros::VoidPtr& tracked_object=ros::VoidPtr(), bool latch=false, bool publish_echoes=true);
-
+    lp.reset(new LaserProcROS(getNodeHandle(), getPrivateNodeHandle()));
   };
   
-}; // laser_proc
+  boost::shared_ptr<LaserProcROS> lp;
+};
 
-#endif
+}
+
+#include <pluginlib/class_list_macros.h>
+PLUGINLIB_DECLARE_CLASS(laser_proc, LaserProcNodelet, laser_proc::LaserProcNodelet, nodelet::Nodelet);
+

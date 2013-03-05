@@ -95,7 +95,7 @@ namespace laser_proc
     LaserPublisher(ros::NodeHandle& nh, uint32_t queue_size,
                     const ros::SubscriberStatusCallback& connect_cb,
                     const ros::SubscriberStatusCallback& disconnect_cb,
-                    const ros::VoidPtr& tracked_object, bool latch);
+                    const ros::VoidPtr& tracked_object, bool latch, bool publish_echoes = true);
     
     struct Impl;
     typedef boost::shared_ptr<Impl> ImplPtr;

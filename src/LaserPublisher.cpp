@@ -74,10 +74,12 @@ struct LaserPublisher::Impl
 LaserPublisher::LaserPublisher(ros::NodeHandle& nh, uint32_t queue_size,
                                  const ros::SubscriberStatusCallback& connect_cb,
                                  const ros::SubscriberStatusCallback& disconnect_cb,
-                                 const ros::VoidPtr& tracked_object, bool latch)
+                                 const ros::VoidPtr& tracked_object, bool latch, bool publish_echoes)
   : impl_(new Impl)
 {
-  impl_->echo_pub_ = nh.advertise<sensor_msgs::MultiEchoLaserScan>("echoes", queue_size, connect_cb, disconnect_cb, tracked_object, latch);
+  if(publish_echoes){
+    impl_->echo_pub_ = nh.advertise<sensor_msgs::MultiEchoLaserScan>("echoes", queue_size, connect_cb, disconnect_cb, tracked_object, latch);
+  }
   impl_->pubs_.push_back(nh.advertise<sensor_msgs::LaserScan>("first", queue_size, connect_cb, disconnect_cb, tracked_object, latch));
   impl_->functs_.push_back(laser_proc::LaserProc::getFirstScan);
   impl_->pubs_.push_back(nh.advertise<sensor_msgs::LaserScan>("last", queue_size, connect_cb, disconnect_cb, tracked_object, latch));
@@ -118,7 +120,9 @@ void LaserPublisher::publish(const sensor_msgs::MultiEchoLaserScan& msg) const
   }
 
   // Publish original MultiEchoLaserScan
-  impl_->echo_pub_.publish(msg);
+  if(impl_->echo_pub_){
+    impl_->echo_pub_.publish(msg);
+  }
   
   // If needed, publish LaserScans
   for(size_t i = 0; i < impl_->pubs_.size(); i++){
@@ -136,7 +140,9 @@ void LaserPublisher::publish(const sensor_msgs::MultiEchoLaserScanConstPtr& msg)
   }
 
   // Publish original MultiEchoLaserScan
-  impl_->echo_pub_.publish(msg);
+  if(impl_->echo_pub_){
+    impl_->echo_pub_.publish(msg);
+  }
   
   // If needed, publish LaserScans
   for(size_t i = 0; i < impl_->pubs_.size(); i++){

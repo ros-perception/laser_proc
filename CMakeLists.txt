@@ -15,7 +15,7 @@ find_package(catkin REQUIRED COMPONENTS roscpp sensor_msgs rosconsole nodelet)
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS include
-  LIBRARIES laser_proc_library laser_publisher laser_transport
+  LIBRARIES laser_proc_library laser_publisher laser_transport laser_proc_ROS LaserProcNodelet
   CATKIN_DEPENDS roscpp sensor_msgs rosconsole nodelet
   DEPENDS
 )
@@ -31,28 +31,32 @@ include_directories(include ${catkin_INCLUDE_DIRS})
 add_library(laser_proc_library src/LaserProc.cpp)
 target_link_libraries(laser_proc_library ${catkin_LIBRARIES})
 
+## Publisher library
 add_library(laser_publisher src/LaserPublisher.cpp)
 target_link_libraries(laser_publisher laser_proc_library ${catkin_LIBRARIES})
 
+## Factory for making LaserPublishers
 add_library(laser_transport src/LaserTransport.cpp)
 target_link_libraries(laser_transport laser_publisher ${catkin_LIBRARIES})
 
-## Publisher library
-
 ## ROS Library
+add_library(laser_proc_ROS src/LaserProcROS.cpp)
+target_link_libraries(laser_proc_ROS laser_transport ${catkin_LIBRARIES})
 
 ## Nodelet wrapper
+add_library(LaserProcNodelet src/LaserProcNodelet.cpp)
+target_link_libraries(LaserProcNodelet laser_proc_ROS ${catkin_LIBRARIES})
 
 ## Node wrapper
-#add_executable(laser_proc src/laser_proc_node.cpp))
-#target_link_libraries(laser_proc laser_proc_library ${catkin_LIBRARIES})
+add_executable(laser_proc src/laser_proc.cpp)
+target_link_libraries(laser_proc laser_proc_ROS ${catkin_LIBRARIES})
 
 #############
 ## Install ##
 #############
 
 ## Mark executables and/or libraries for installation
-install(TARGETS laser_proc_library
+install(TARGETS laser_proc_library laser_publisher laser_transport laser_proc_ROS LaserProcNodelet laser_proc
    LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
@@ -65,11 +69,9 @@ install(DIRECTORY include/${PROJECT_NAME}/
 )
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
-# install(FILES
-#   # myfile1
-#   # myfile2
-#   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-# )
+install(FILES nodelets.xml
+        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
 
 #############
 ## Testing ##

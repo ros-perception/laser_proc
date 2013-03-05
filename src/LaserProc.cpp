@@ -33,8 +33,6 @@
 
 #include <laser_proc/LaserProc.h>
 
-#include <ros/console.h>
-
 using namespace laser_proc;
 
 sensor_msgs::LaserScanPtr LaserProc::getFirstScan(const sensor_msgs::MultiEchoLaserScan& msg){
