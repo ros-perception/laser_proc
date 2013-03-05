@@ -121,7 +121,9 @@ void LaserPublisher::publish(const sensor_msgs::MultiEchoLaserScan& msg) const
 
   // Publish original MultiEchoLaserScan
   if(impl_->echo_pub_){
-    impl_->echo_pub_.publish(msg);
+    if(impl_->echo_pub_.getNumSubscribers() > 0){
+      impl_->echo_pub_.publish(msg);
+    }
   }
   
   // If needed, publish LaserScans

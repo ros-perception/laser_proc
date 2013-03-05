@@ -57,7 +57,6 @@ void LaserProcROS::connectCb(const ros::SingleSubscriberPublisher& pub) {
   if (!sub_ && pub_.getNumSubscribers() > 0) {
     ROS_DEBUG("Connecting to multi echo topic.");
     sub_ = nh_.subscribe("echoes", 10, &LaserProcROS::scanCb, this);
-    //it_.subscribeCamera("image", 10, &LaserProcROS::depthCb, this, hints);
   }
 }
 
