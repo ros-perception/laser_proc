@@ -4,7 +4,7 @@ project(laser_proc)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS roscpp sensor_msgs rosconsole nodelet)
+find_package(catkin REQUIRED COMPONENTS roscpp sensor_msgs rosconsole nodelet pluginlib)
 
 ###################################################
 ## Declare things to be passed to other projects ##
