@@ -48,11 +48,11 @@ LaserProcROS::~LaserProcROS(){
 
 
 
-void LaserProcROS::scanCb(const sensor_msgs::MultiEchoLaserScanConstPtr& msg){
+void LaserProcROS::scanCb(const sensor_msgs::MultiEchoLaserScanConstPtr& msg) const{
   pub_.publish(msg);
 }
 
-void LaserProcROS::connectCb(const ros::SingleSubscriberPublisher& pub) {
+void LaserProcROS::connectCb(const ros::SingleSubscriberPublisher& pub){
   boost::mutex::scoped_lock lock(connect_mutex_);
   if (!sub_ && pub_.getNumSubscribers() > 0) {
     ROS_DEBUG("Connecting to multi echo topic.");
@@ -60,7 +60,7 @@ void LaserProcROS::connectCb(const ros::SingleSubscriberPublisher& pub) {
   }
 }
 
-void LaserProcROS::disconnectCb(const ros::SingleSubscriberPublisher& pub) {
+void LaserProcROS::disconnectCb(const ros::SingleSubscriberPublisher& pub){
   boost::mutex::scoped_lock lock(connect_mutex_);
   if (pub_.getNumSubscribers() == 0) {
     ROS_DEBUG("Unsubscribing from multi echo topic.");
