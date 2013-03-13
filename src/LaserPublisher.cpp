@@ -129,7 +129,11 @@ void LaserPublisher::publish(const sensor_msgs::MultiEchoLaserScan& msg) const
   // If needed, publish LaserScans
   for(size_t i = 0; i < impl_->pubs_.size(); i++){
     if(impl_->pubs_[i].getNumSubscribers() > 0){
-      impl_->pubs_[i].publish(impl_->functs_[i](msg));
+       try{
+        impl_->pubs_[i].publish(impl_->functs_[i](msg));
+      } catch(std::runtime_error& e){
+        ROS_ERROR_THROTTLE(1.0, "Could not publish to topic %s: %s", impl_->pubs_[i].getTopic().c_str(), e.what());
+      }
     }
   }
 }
@@ -149,7 +153,11 @@ void LaserPublisher::publish(const sensor_msgs::MultiEchoLaserScanConstPtr& msg)
   // If needed, publish LaserScans
   for(size_t i = 0; i < impl_->pubs_.size(); i++){
     if(impl_->pubs_[i].getNumSubscribers() > 0){
-      impl_->pubs_[i].publish(impl_->functs_[i](*msg));
+       try{
+        impl_->pubs_[i].publish(impl_->functs_[i](*msg));
+      } catch(std::runtime_error& e){
+        ROS_ERROR_THROTTLE(1.0, "Could not publish to topic %s: %s", impl_->pubs_[i].getTopic().c_str(), e.what());
+      }
     }
   }
 }

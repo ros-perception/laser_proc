@@ -84,7 +84,7 @@ sensor_msgs::LaserScanPtr LaserProc::getMostIntenseScan(const sensor_msgs::Multi
     out->intensities.resize(msg.intensities.size());
   } else {
     std::stringstream ss;
-    ss << "Size of ranges does not equal size or intensities.";
+    ss << "getMostIntenseScan::Size of ranges does not equal size of intensities, cannot create scan.";
     throw std::runtime_error(ss.str());
   }
   for(size_t i = 0; i < out->intensities.size(); i++){
