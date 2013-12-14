@@ -57,6 +57,7 @@ target_link_libraries(laser_proc laser_proc_ROS ${catkin_LIBRARIES})
 
 ## Mark executables and/or libraries for installation
 install(TARGETS laser_proc_library laser_publisher laser_transport laser_proc_ROS LaserProcNodelet laser_proc
+   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
