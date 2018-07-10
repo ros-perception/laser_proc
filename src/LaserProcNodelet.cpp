@@ -57,5 +57,5 @@ private:
 }
 
 #include <pluginlib/class_list_macros.h>
-PLUGINLIB_DECLARE_CLASS(laser_proc, LaserProcNodelet, laser_proc::LaserProcNodelet, nodelet::Nodelet);
+PLUGINLIB_EXPORT_CLASS(laser_proc::LaserProcNodelet, nodelet::Nodelet)
 
