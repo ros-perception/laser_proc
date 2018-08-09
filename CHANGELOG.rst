@@ -2,6 +2,11 @@
 Changelog for package laser_proc
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* update to use non deprecated pluginlib macro
+* Contributors: Jonathan Binney, Mikael Arguedas
+
 0.1.4 (2014-03-30)
 ------------------
 * Install fix for Android.
