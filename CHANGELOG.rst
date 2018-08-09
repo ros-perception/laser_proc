@@ -2,8 +2,8 @@
 Changelog for package laser_proc
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.1.5 (2018-08-09)
+------------------
 * update to use non deprecated pluginlib macro
 * Contributors: Jonathan Binney, Mikael Arguedas
 
