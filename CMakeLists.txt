@@ -1,88 +1,64 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.5)
 project(laser_proc)
 
-## Find catkin macros and libraries
-## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
-## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS roscpp sensor_msgs rosconsole nodelet pluginlib)
+# Default to C++14
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 14)
+endif()
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
 
-###################################################
-## Declare things to be passed to other projects ##
-###################################################
+find_package(ament_cmake REQUIRED)
+find_package(class_loader REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(rclcpp_components REQUIRED)
+find_package(sensor_msgs REQUIRED)
 
-## LIBRARIES: libraries you create in this project that dependent projects also need
-## CATKIN_DEPENDS: catkin_packages dependent projects also need
-## DEPENDS: system dependencies of this project that dependent projects also need
-catkin_package(
-  INCLUDE_DIRS include
-  LIBRARIES laser_proc_library laser_publisher laser_transport laser_proc_ROS LaserProcNodelet
-  CATKIN_DEPENDS roscpp sensor_msgs rosconsole nodelet
-  DEPENDS
+add_library(laser_proc
+  src/laser_proc.cpp
+  src/laser_publisher.cpp
+)
+target_include_directories(laser_proc
+  PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+ament_target_dependencies(laser_proc
+  rclcpp
+  sensor_msgs
 )
 
-###########
-## Build ##
-###########
-
-## Specify additional locations of header files
-include_directories(include ${catkin_INCLUDE_DIRS})
-
-## Library that does actual conversion
-add_library(laser_proc_library src/LaserProc.cpp)
-target_link_libraries(laser_proc_library ${catkin_LIBRARIES})
-
-## Publisher library
-add_library(laser_publisher src/LaserPublisher.cpp)
-target_link_libraries(laser_publisher laser_proc_library ${catkin_LIBRARIES})
-
-## Factory for making LaserPublishers
-add_library(laser_transport src/LaserTransport.cpp)
-target_link_libraries(laser_transport laser_publisher ${catkin_LIBRARIES})
-
-## ROS Library
-add_library(laser_proc_ROS src/LaserProcROS.cpp)
-target_link_libraries(laser_proc_ROS laser_transport ${catkin_LIBRARIES})
-
-## Nodelet wrapper
-add_library(LaserProcNodelet src/LaserProcNodelet.cpp)
-target_link_libraries(LaserProcNodelet laser_proc_ROS ${catkin_LIBRARIES})
-
-## Node wrapper
-add_executable(laser_proc src/laser_proc.cpp)
-target_link_libraries(laser_proc laser_proc_ROS ${catkin_LIBRARIES})
-
-#############
-## Install ##
-#############
-
-## Mark executables and/or libraries for installation
-install(TARGETS laser_proc_library laser_publisher laser_transport laser_proc_ROS LaserProcNodelet laser_proc
-   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+## Laser Proc component
+add_library(laser_proc_component SHARED src/laser_proc_component.cpp)
+target_link_libraries(laser_proc_component laser_proc)
+ament_target_dependencies(laser_proc_component
+  class_loader
+)
+rclcpp_components_register_node(laser_proc_component
+  PLUGIN "laser_proc::LaserProcComponent"
+  EXECUTABLE laser_proc_node
 )
 
-## Mark cpp header files for installation
-install(DIRECTORY include/${PROJECT_NAME}/
-   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-   FILES_MATCHING PATTERN "*.h"
-   PATTERN ".svn" EXCLUDE
+install(TARGETS laser_proc laser_proc_component
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
 )
 
-## Mark other files for installation (e.g. launch and bag files, etc.)
-install(FILES nodelets.xml
-        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+install(DIRECTORY include/
+  DESTINATION include
 )
 
-#############
-## Testing ##
-#############
+if(BUILD_TESTING)
+  find_package(ament_lint_auto REQUIRED)
+  set(ament_cmake_copyright_FOUND TRUE)
+  ament_lint_auto_find_test_dependencies()
+endif()
 
-## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test.cpp)
-# if(TARGET ${PROJECT_NAME}-test)
-#   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
-# endif()
+ament_export_dependencies(rclcpp)
+ament_export_dependencies(sensor_msgs)
+ament_export_include_directories(include)
+ament_export_libraries(laser_proc)
 
-## Add folders to be run by python nosetests
-# catkin_add_nosetests(test)
+ament_package()

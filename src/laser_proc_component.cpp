@@ -27,31 +27,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-/* 
+/*
  * Author: Chad Rockey
  */
 
-#ifndef IMAGE_PROC_LASER_TRANSPORT_H
-#define IMAGE_PROC_LASER_TRANSPORT_H
-
-#include <ros/ros.h>
-
-#include <laser_proc/LaserPublisher.h>
+#include "laser_proc/laser_proc_component.hpp"
 
 namespace laser_proc
-{ 
-  class LaserTransport
-  {
-      public:
-        static LaserPublisher advertiseLaser(ros::NodeHandle& nh, uint32_t queue_size, bool latch=false);
+{
+LaserProcComponent::LaserProcComponent(const rclcpp::NodeOptions & node_options)
+: rclcpp::Node("laser_proc", node_options),
+  laser_publisher_(this->get_node_topics_interface(), 10)
+{
+  auto callback = [ = ](const sensor_msgs::msg::MultiEchoLaserScan::SharedPtr msg) {
+      laser_publisher_.publish(msg);
+    };
+  laser_subscription_ =
+    this->create_subscription<sensor_msgs::msg::MultiEchoLaserScan>("echoes", 10, callback);
+}
+}  // namespace laser_proc
 
-        static LaserPublisher advertiseLaser(ros::NodeHandle& nh, uint32_t queue_size,
-                        const ros::SubscriberStatusCallback& connect_cb,
-                        const ros::SubscriberStatusCallback& disconnect_cb=ros::SubscriberStatusCallback(),
-                        const ros::VoidPtr& tracked_object=ros::VoidPtr(), bool latch=false, bool publish_echoes=true);
-
-  };
-  
-}; // laser_proc
-
-#endif
+#include "class_loader/register_macro.hpp"
+CLASS_LOADER_REGISTER_CLASS(laser_proc::LaserProcComponent, rclcpp::Node)

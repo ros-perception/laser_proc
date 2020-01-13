@@ -27,35 +27,24 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-/* 
+/*
  * Author: Chad Rockey
  */
 
-#include <laser_proc/LaserProcROS.h>
-#include <nodelet/nodelet.h>
+#include <functional>
 
+#include "laser_proc/laser_proc_component.hpp"
 
-namespace laser_proc
+#include "rclcpp/rclcpp.hpp"
+
+int main(int argc, char ** argv)
 {
+  rclcpp::init(argc, argv);
 
-class LaserProcNodelet : public nodelet::Nodelet
-{
-public:
-  LaserProcNodelet()  {};
+  laser_proc::LaserProcComponent laser_proc;
 
-  ~LaserProcNodelet() {}
+  rclcpp::spin(laser_proc);
 
-private:
-  virtual void onInit()
-  {
-    lp.reset(new LaserProcROS(getNodeHandle(), getPrivateNodeHandle()));
-  };
-  
-  boost::shared_ptr<LaserProcROS> lp;
-};
-
+  rclcpp::shutdown();
+  return 0;
 }
-
-#include <pluginlib/class_list_macros.h>
-PLUGINLIB_EXPORT_CLASS(laser_proc::LaserProcNodelet, nodelet::Nodelet)
-

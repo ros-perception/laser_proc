@@ -27,56 +27,47 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-/* 
+/*
  * Author: Chad Rockey
  */
 
-#ifndef LASER_PROC_ROS_H
-#define LASER_PROC_ROS_H
+#ifndef LASER_PROC__LASER_PROC_HPP_
+#define LASER_PROC__LASER_PROC_HPP_
 
-#include <ros/ros.h>
-#include <laser_proc/LaserTransport.h>
-#include <sensor_msgs/LaserScan.h>
-#include <sensor_msgs/MultiEchoLaserScan.h>
-#include <boost/thread/mutex.hpp>
+#include "sensor_msgs/msg/laser_echo.hpp"
+#include "sensor_msgs/msg/laser_scan.hpp"
+#include "sensor_msgs/msg/multi_echo_laser_scan.hpp"
 
 namespace laser_proc
-{ 
-  class LaserProcROS
-  {
-  public:
-    LaserProcROS(ros::NodeHandle& n, ros::NodeHandle& pnh);
-    
-    ~LaserProcROS();
+{
+class LaserProc
+{
+public:
+  static sensor_msgs::msg::LaserScan getFirstScan(
+    const sensor_msgs::msg::MultiEchoLaserScan & msg);
 
-  private:
+  static sensor_msgs::msg::LaserScan getLastScan(
+    const sensor_msgs::msg::MultiEchoLaserScan & msg);
 
-    void scanCb(const sensor_msgs::MultiEchoLaserScanConstPtr& msg) const;
+  static sensor_msgs::msg::LaserScan getMostIntenseScan(
+    const sensor_msgs::msg::MultiEchoLaserScan & msg);
 
-    /**
-     * Callback that is called when there is a new subscriber.
-     * 
-     * Will not subscribe until we have a subscriber for our LaserScans (lazy subscribing).
-     * 
-     */
-    void connectCb(const ros::SingleSubscriberPublisher& pub);
+private:
+  static void fillLaserScan(
+    const sensor_msgs::msg::MultiEchoLaserScan & msg, sensor_msgs::msg::LaserScan & out);
 
-    /**
-     * Callback called when a subscriber unsubscribes.
-     * 
-     * If all current subscribers of our LaserScans stop listening, stop subscribing (lazy subscribing).
-     * 
-     */
-    void disconnectCb(const ros::SingleSubscriberPublisher& pub);
-    
-    ros::NodeHandle nh_; ///< Nodehandle used to subscribe in the connectCb.
-    laser_proc::LaserPublisher pub_; ///< Publisher
-    ros::Subscriber sub_; ///< Multi echo subscriber
-    
-    boost::mutex connect_mutex_; ///< Prevents the connectCb and disconnectCb from being called until everything is initialized.
-  };
-  
-  
-}; // depthimage_to_laserscan
+  static size_t getFirstValue(
+    const sensor_msgs::msg::LaserEcho & ranges, float & range);
 
-#endif
+  static size_t getLastValue(
+    const sensor_msgs::msg::LaserEcho & ranges, float & range);
+
+  static void getMostIntenseValue(
+    const sensor_msgs::msg::LaserEcho & ranges,
+    const sensor_msgs::msg::LaserEcho & intensities,
+    float & range,
+    float & intensity);
+};
+}  // namespace laser_proc
+
+#endif  // LASER_PROC__LASER_PROC_HPP_
