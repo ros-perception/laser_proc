@@ -107,9 +107,9 @@ LaserPublisher::LaserPublisher(
   impl_->functs_.push_back(laser_proc::LaserProc::getMostIntenseScan);
 }
 
-uint32_t LaserPublisher::getNumSubscribers() const
+size_t LaserPublisher::getNumSubscribers() const
 {
-  uint32_t num = 0;
+  size_t num = 0;
 
   if (impl_ && impl_->isValid()) {
     num += impl_->echo_pub_->get_subscription_count();

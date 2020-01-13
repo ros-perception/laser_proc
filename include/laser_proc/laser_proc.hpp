@@ -38,17 +38,22 @@
 #include "sensor_msgs/msg/laser_scan.hpp"
 #include "sensor_msgs/msg/multi_echo_laser_scan.hpp"
 
+#include "visibility_control.hpp"
+
 namespace laser_proc
 {
 class LaserProc
 {
 public:
+  LASER_PROC_PUBLIC
   static sensor_msgs::msg::LaserScan getFirstScan(
     const sensor_msgs::msg::MultiEchoLaserScan & msg);
 
+  LASER_PROC_PUBLIC
   static sensor_msgs::msg::LaserScan getLastScan(
     const sensor_msgs::msg::MultiEchoLaserScan & msg);
 
+  LASER_PROC_PUBLIC
   static sensor_msgs::msg::LaserScan getMostIntenseScan(
     const sensor_msgs::msg::MultiEchoLaserScan & msg);
 

@@ -28,6 +28,10 @@ ament_target_dependencies(laser_proc
   rclcpp
   sensor_msgs
 )
+# Causes the visibility macros to use dllexport rather than dllimport,
+# which is appropriate when building the dll but not consuming it.
+target_compile_definitions(${PROJECT_NAME}
+  PRIVATE "LASER_PROC_BUILDING_LIBRARY")
 
 ## Laser Proc component
 add_library(laser_proc_component SHARED src/laser_proc_component.cpp)

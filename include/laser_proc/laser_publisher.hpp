@@ -42,15 +42,19 @@
 
 #include "sensor_msgs/msg/multi_echo_laser_scan.hpp"
 
+#include "visibility_control.hpp"
+
 namespace laser_proc
 {
 
 class LaserPublisher
 {
 public:
+  LASER_PROC_PUBLIC
   explicit LaserPublisher(
     rclcpp::Node::SharedPtr & nh, uint32_t queue_size, bool publish_echoes = true);
 
+  LASER_PROC_PUBLIC
   explicit LaserPublisher(
     std::shared_ptr<rclcpp::node_interfaces::NodeTopicsInterface> topics_interface,
     uint32_t queue_size,
@@ -62,31 +66,40 @@ public:
    *
    * Returns sum of all child publishers.
    */
-  uint32_t getNumSubscribers() const;
+  LASER_PROC_PUBLIC
+  size_t getNumSubscribers() const;
 
   /*!
    * \brief Returns the topics of this LaserPublisher.
    */
+  LASER_PROC_PUBLIC
   std::vector<std::string> getTopics() const;
 
   /*!
    * \brief Publish a MultiEchoLaserScan on the topics associated with this LaserPublisher.
    */
+  LASER_PROC_PUBLIC
   void publish(const sensor_msgs::msg::MultiEchoLaserScan & msg) const;
 
   /*!
    * \brief Publish a MultiEchoLaserScan on the topics associated with this LaserPublisher.
    */
+  LASER_PROC_PUBLIC
   void publish(sensor_msgs::msg::MultiEchoLaserScan::ConstSharedPtr msg) const;
 
   /*!
    * \brief Shutdown the advertisements associated with this Publisher.
    */
+  LASER_PROC_PUBLIC
   void shutdown();
 
+  LASER_PROC_PUBLIC
   operator void *() const;
+  LASER_PROC_PUBLIC
   bool operator<(const LaserPublisher & rhs) const {return impl_ < rhs.impl_;}
+  LASER_PROC_PUBLIC
   bool operator!=(const LaserPublisher & rhs) const {return impl_ != rhs.impl_;}
+  LASER_PROC_PUBLIC
   bool operator==(const LaserPublisher & rhs) const {return impl_ == rhs.impl_;}
 
 private:
