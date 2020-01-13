@@ -15,7 +15,7 @@ find_package(rclcpp REQUIRED)
 find_package(rclcpp_components REQUIRED)
 find_package(sensor_msgs REQUIRED)
 
-add_library(laser_proc
+add_library(laser_proc SHARED
   src/laser_proc.cpp
   src/laser_publisher.cpp
 )
