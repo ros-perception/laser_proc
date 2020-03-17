@@ -2,8 +2,8 @@
 Changelog for package laser_proc
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.0 (2020-03-17)
+------------------
 * export symbols in laser_proc component (`#8 <https://github.com/ros-perception/laser_proc/issues/8>`_)
 * Make the laser_proc library shared. (`#7 <https://github.com/ros-perception/laser_proc/issues/7>`_)
 * Ros2 devel (`#6 <https://github.com/ros-perception/laser_proc/issues/6>`_)
