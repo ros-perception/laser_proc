@@ -2,6 +2,13 @@
 Changelog for package laser_proc
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* export symbols in laser_proc component (`#8 <https://github.com/ros-perception/laser_proc/issues/8>`_)
+* Make the laser_proc library shared. (`#7 <https://github.com/ros-perception/laser_proc/issues/7>`_)
+* Ros2 devel (`#6 <https://github.com/ros-perception/laser_proc/issues/6>`_)
+* Contributors: Chris Lalancette, Karsten Knese, Brett, Gu, Chao Jie, Marc-Antoine Testier
+
 0.1.5 (2018-08-09)
 ------------------
 * update to use non deprecated pluginlib macro
