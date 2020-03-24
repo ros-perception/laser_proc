@@ -2,6 +2,11 @@
 Changelog for package laser_proc
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Make sure to add necessary build dependencies. (`#9 <https://github.com/ros-perception/laser_proc/issues/9>`_)
+* Contributors: Chris Lalancette
+
 1.0.0 (2020-03-17)
 ------------------
 * export symbols in laser_proc component (`#8 <https://github.com/ros-perception/laser_proc/issues/8>`_)
