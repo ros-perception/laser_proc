@@ -2,8 +2,8 @@
 Changelog for package laser_proc
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.1 (2020-03-24)
+------------------
 * Make sure to add necessary build dependencies. (`#9 <https://github.com/ros-perception/laser_proc/issues/9>`_)
 * Contributors: Chris Lalancette
 
