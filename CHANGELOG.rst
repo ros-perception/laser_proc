@@ -2,8 +2,8 @@
 Changelog for package laser_proc
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.1.6 (2020-04-24)
+------------------
 * Update required cmake version
 * Contributors: Jon Binney
 
