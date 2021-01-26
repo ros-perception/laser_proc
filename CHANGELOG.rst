@@ -2,6 +2,11 @@
 Changelog for package laser_proc
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Use C-style strings for RCLCPP\_ macros. (`#12 <https://github.com/ros-perception/laser_proc/issues/12>`_)
+* Contributors: Chris Lalancette
+
 1.0.1 (2020-03-24)
 ------------------
 * Make sure to add necessary build dependencies. (`#9 <https://github.com/ros-perception/laser_proc/issues/9>`_)
