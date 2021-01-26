@@ -157,7 +157,7 @@ void LaserPublisher::publish(const sensor_msgs::msg::MultiEchoLaserScan & msg) c
       } catch (std::runtime_error & e) {
         auto err = std::string("Could not publish to topic ") + impl_->pubs_[i]->get_topic_name();
         auto logger = rclcpp::get_logger("laser_publisher");
-        RCLCPP_ERROR(logger, err);
+        RCLCPP_ERROR(logger, "%s", err.c_str());
         RCLCPP_ERROR(logger, e.what());
       }
     }
@@ -187,7 +187,7 @@ void LaserPublisher::publish(sensor_msgs::msg::MultiEchoLaserScan::ConstSharedPt
       } catch (std::runtime_error & e) {
         auto err = std::string("Could not publish to topic ") + impl_->pubs_[i]->get_topic_name();
         auto logger = rclcpp::get_logger("laser_publisher");
-        RCLCPP_ERROR(logger, err);
+        RCLCPP_ERROR(logger, "%s", err.c_str());
         RCLCPP_ERROR(logger, e.what());
       }
     }
