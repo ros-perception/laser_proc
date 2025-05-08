@@ -24,7 +24,7 @@ target_include_directories(laser_proc
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
-ament_target_dependencies(laser_proc
+target_link_libraries(laser_proc PUBLIC
   rclcpp
   sensor_msgs
 )
@@ -36,7 +36,7 @@ target_compile_definitions(${PROJECT_NAME}
 ## Laser Proc component
 add_library(laser_proc_component SHARED src/laser_proc_component.cpp)
 target_link_libraries(laser_proc_component laser_proc)
-ament_target_dependencies(laser_proc_component
+target_link_libraries(laser_proc_component PUBLIC
   class_loader
 )
 rclcpp_components_register_node(laser_proc_component
