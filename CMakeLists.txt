@@ -35,9 +35,8 @@ target_compile_definitions(${PROJECT_NAME}
 
 ## Laser Proc component
 add_library(laser_proc_component SHARED src/laser_proc_component.cpp)
-target_link_libraries(laser_proc_component laser_proc)
-target_link_libraries(laser_proc_component PUBLIC
-  class_loader
+target_link_libraries(laser_proc_component laser_proc
+  PUBLIC class_loader
 )
 rclcpp_components_register_node(laser_proc_component
   PLUGIN "laser_proc::LaserProcComponent"
