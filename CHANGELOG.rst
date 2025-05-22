@@ -2,6 +2,11 @@
 Changelog for package laser_proc
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.3 (2025-05-22)
+------------------
+* [kilted] Update deprecated call to ament_target_dependencies (`#14 <https://github.com/ros-perception/laser_proc/issues/14>`_)
+* Contributors: David V. Lu!!
+
 1.0.2 (2021-01-26)
 ------------------
 * Use C-style strings for RCLCPP\_ macros. (`#12 <https://github.com/ros-perception/laser_proc/issues/12>`_)
