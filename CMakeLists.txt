@@ -24,9 +24,10 @@ target_include_directories(laser_proc
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
-ament_target_dependencies(laser_proc
-  rclcpp
-  sensor_msgs
+target_link_libraries(laser_proc PUBLIC
+  ${sensor_msgs_TARGETS}
+  rclcpp::rclcpp
+  sensor_msgs::sensor_msgs_library
 )
 # Causes the visibility macros to use dllexport rather than dllimport,
 # which is appropriate when building the dll but not consuming it.
@@ -35,9 +36,9 @@ target_compile_definitions(${PROJECT_NAME}
 
 ## Laser Proc component
 add_library(laser_proc_component SHARED src/laser_proc_component.cpp)
-target_link_libraries(laser_proc_component laser_proc)
-ament_target_dependencies(laser_proc_component
-  class_loader
+target_link_libraries(laser_proc_component PUBLIC
+  laser_proc
+  class_loader::class_loader
 )
 rclcpp_components_register_node(laser_proc_component
   PLUGIN "laser_proc::LaserProcComponent"
